@@ -10,16 +10,37 @@ class App extends Component {
       players: [],
       balance: '',
       value: '',
-      message: ''
+      message: '',
+      currentVisitorAccount: ''
     }
   }
 
-  async componentDidMount() {
+  _loadManager = async () => {
     const manager = await lottery.methods.manager().call()
-    const players = await lottery.methods.getPlayers().call()
-    const balance = await web3.eth.getBalance(lottery.options.address)
+    this.setState({ manager })
+  }
 
-    this.setState({ manager, players, balance })
+  _loadPlayers = async () => {
+    const players = await lottery.methods.getPlayers().call()
+    this.setState({ players })
+  }
+
+  _loadBalanace = async () => {
+    const balance = await web3.eth.getBalance(lottery.options.address)
+    this.setState({ balance })
+  }
+
+  _loadCurrentVisitorAccount = async () => {
+    const accounts = await web3.eth.getAccounts()
+    const currentVisitorAccount = accounts[0]
+    this.setState({ currentVisitorAccount })
+  }
+
+  componentWillMount() {
+    this._loadManager()
+    this._loadCurrentVisitorAccount()
+    this._loadPlayers()
+    this._loadBalanace()
   }
 
   _enterToTheLottery = async event => {
@@ -35,6 +56,7 @@ class App extends Component {
    })
 
    this.setState({ message: 'You have been entered!' })
+   this._loadPlayers()
  }
 
  _pickAWinner = async () => {
@@ -50,35 +72,52 @@ class App extends Component {
  }
 
   render() {
+    const { manager, currentVisitorAccount } = this.state
     return (
-      <div>
-        <h2>Lottery Contract</h2>
-        <p>
-          This contract is managed by {this.state.manager}. There are currently{' '}
-          {this.state.players.length} people entered, competing to win{' '}
-          {web3.utils.fromWei(this.state.balance, 'ether')} ether!
+      <div className="container">
+        <div className="row">
+          <div className="col m4 s12 l12 center-align">
+            <h1>Lottery Pool</h1>
+          </div>
+        </div>
+
+        <p className="flow-text center-align">
+          This contract is managed by: <b>{this.state.manager}</b>
+        </p>
+        <p className="flow-text center-align">
+          There are currently{' '} <b>{this.state.players.length}</b> people entered
+        </p>
+        <p className="flow-text center-align">
+          Competing to win{' '}<b>{web3.utils.fromWei(this.state.balance, 'ether')} ether! </b>
         </p>
 
         <hr />
 
-        <form onSubmit={this._enterToTheLottery}>
+        <form className="center-align" onSubmit={this._enterToTheLottery}>
           <h4>Want to try your luck?</h4>
           <div>
             <label>Amount of ether to enter</label>
             <input
               value={this.state.value}
+              placeholder="ex: .011"
               onChange={event => this.setState({ value: event.target.value })}
             />
           </div>
-          <button>Enter</button>
+          <button class="waves-effect waves-light btn">
+            Enter
+          </button>
         </form>
 
-        <hr />
-
-        <h4>Ready to pick a winner?</h4>
-        <button onClick={this._pickAWinner}>Pick a winner!</button>
-
-        <hr />
+        {
+          currentVisitorAccount === manager ?
+          <div>
+            <hr />
+            <h4>Ready to pick a winner?</h4>
+            <button onClick={this._pickAWinner}>Pick a winner!</button>
+            <hr />
+          </div>
+          : null
+        }
 
         <h1>{this.state.message}</h1>
       </div>
