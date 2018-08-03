@@ -3,6 +3,8 @@
 Lottery pool is a simple web based game where you can enter to compete with other players
 to win money
 
+# You need to have [Metamask](https://metamask.io/) installed to use this app
+
 you can play [here](https://aklssl.now.sh)
 
 The game works as follows:
@@ -22,6 +24,7 @@ where you can find the smart contract solidity code, a **compile** and a **deplo
 together with lots of **test cases**. [lottery](https://github.com/Rafaell416/lottery)
 
 The contract was deployed to Rinkeby Test Network using [infura](https://infura.io/)
+and is located at this address [0xbEca329eBF7583cE37966f1de407a145B801944d](https://rinkeby.etherscan.io/address/0xbEca329eBF7583cE37966f1de407a145B801944d)
 
 
 ### Running the app locally
@@ -32,4 +35,6 @@ git clone git@github.com:Rafaell416/lottery-pool.git
 cd lottery-pool
 
 yarn install
+
+yarn start
 ```
