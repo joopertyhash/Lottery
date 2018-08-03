@@ -110,10 +110,12 @@ class App extends Component {
 
         {
           currentVisitorAccount === manager ?
-          <div>
+          <div >
             <hr />
             <h4>Ready to pick a winner?</h4>
-            <button onClick={this._pickAWinner}>Pick a winner!</button>
+            <button className="waves-effect waves-light btn" onClick={this._pickAWinner}>
+              Pick a winner!
+            </button>
             <hr />
           </div>
           : null
