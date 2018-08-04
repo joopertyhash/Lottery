@@ -5,7 +5,7 @@ to win money
 
 # You need to have [Metamask](https://metamask.io/) installed to use this app
 
-you can play [here](https://aklssl.now.sh)
+you can play [here](https://lottery-react-yfboggvjse.now.sh)
 
 The game works as follows:
 
